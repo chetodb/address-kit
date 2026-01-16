@@ -1,0 +1,51 @@
+{
+  "name": "address-kit",
+  "version": "0.1.0",
+  "description": "Robust TypeScript library for address resolution, normalization, and enrichment.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README.es.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest",
+    "test:ci": "vitest run"
+  },
+  "keywords": [
+    "address",
+    "validation",
+    "normalization",
+    "nominatim",
+    "openstreetmap",
+    "osm",
+    "geocoding",
+    "typescript"
+  ],
+  "author": "David Cheto (@chetodb)",
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@types/node": "^20.0.0",
+    "eslint": "^9.39.2",
+    "globals": "^17.0.0",
+    "neostandard": "^0.12.2",
+    "typescript": "^5.3.0",
+    "typescript-eslint": "^8.53.0",
+    "vitest": "^4.0.17"
+  }
+}
