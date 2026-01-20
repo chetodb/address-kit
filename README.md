@@ -2,7 +2,7 @@
 
 TypeScript library for address resolution, normalization, and enrichment using OpenStreetMap's Nominatim API.
 
-[Leer en Español](./README.es.md)
+[Leer en Español](https://github.com/chetodb/address-kit/blob/main/README.es.md)
 
 ## Features
 
