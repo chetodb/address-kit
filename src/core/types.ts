@@ -42,7 +42,7 @@ export interface GeoProvider {
 }
 
 /** Officially supported providers or custom mode */
-export type SupportedProvider = 'Nominatim' | 'custom'
+export type SupportedProvider = 'Nominatim' | 'Google' | 'custom'
 
 /**
  * Global library configuration.
@@ -52,4 +52,5 @@ export interface AddressKitConfig {
     language?: string
     cacheTtl?: number
     providerInstance?: GeoProvider
+    apiKey?: string
 }

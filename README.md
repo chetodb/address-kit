@@ -49,6 +49,17 @@ const kit = new AddressKit({
 });
 ```
 
+### Google Maps Provider
+
+To use Google Maps, you'll need an API Key:
+
+```typescript
+const kit = new AddressKit({
+  provider: 'Google',
+  apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
+});
+```
+
 ### Custom Providers
 
 You can implement the `GeoProvider` interface to use other services:
