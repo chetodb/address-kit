@@ -4,6 +4,13 @@ export interface NominatimOptions {
     language?: string
 }
 
+interface NominatimResponse {
+    lat: string
+    lon: string
+    display_name: string
+    address: Record<string, string>
+}
+
 export class Nominatim implements GeoProvider {
     private static readonly BASE_URL = 'https://nominatim.openstreetmap.org/search'
     private static readonly USER_AGENT = 'AddressKit-Library/1.0'
@@ -19,7 +26,6 @@ export class Nominatim implements GeoProvider {
     }
 
     async resolveAddress(query: AddressQuery): Promise<AddressSearchResult> {
-        // Encolamos la espera para respetar el límite de 1 req/s de OSM
         const wait = Nominatim.lastRequest
             .catch(() => { })
             .then(() => new Promise<void>(resolve => setTimeout(resolve, Nominatim.MIN_INTERVAL)))
@@ -42,11 +48,11 @@ export class Nominatim implements GeoProvider {
             })
 
             if (response.status === 429) {
-                throw new Error('AddressKit [Nominatim]: Has superado el límite de peticiones permitido. Por favor, espera unos segundos antes de reintentar.')
+                throw new Error('AddressKit [Nominatim]: Rate limit exceeded. Please wait a few seconds before retrying.')
             }
 
             if (!response.ok) {
-                throw new Error(`AddressKit [Nominatim]: La API ha respondido con un error (${response.status}: ${response.statusText}).`)
+                throw new Error(`AddressKit [Nominatim]: API returned an error (${response.status}: ${response.statusText}).`)
             }
 
             const data = await response.json()
@@ -64,12 +70,12 @@ export class Nominatim implements GeoProvider {
                 if (error.message.startsWith('AddressKit')) throw error
 
                 if (error.name === 'TypeError') {
-                    throw new Error('AddressKit [Nominatim]: Error de red. No se pudo contactar con OpenStreetMap. ¿Tienes conexión?')
+                    throw new Error('AddressKit [Nominatim]: Network error. Could not contact OpenStreetMap.')
                 }
 
                 throw new Error(`AddressKit [Nominatim]: ${error.message}`)
             }
-            throw new Error('AddressKit [Nominatim]: Error inesperado durante la resolución.')
+            throw new Error('AddressKit [Nominatim]: Unexpected error during resolution.')
         }
     }
 
@@ -89,7 +95,7 @@ export class Nominatim implements GeoProvider {
         return params
     }
 
-    private normalize(raw: any): Address {
+    private normalize(raw: NominatimResponse): Address {
         const addr = raw.address || {}
 
         const street = addr.road || addr.pedestrian || addr.footway ||

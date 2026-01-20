@@ -14,8 +14,8 @@ export interface Address {
 }
 
 /**
- * Parámetros de búsqueda. 
- * El país es obligatorio para garantizar la precisión.
+ * Search parameters.
+ * Country is required to ensure accuracy.
  */
 export interface AddressQuery {
     street?: string
@@ -26,7 +26,7 @@ export interface AddressQuery {
 }
 
 /**
- * Respuesta del servicio de resolución.
+ * Resolution service response.
  */
 export interface AddressSearchResult {
     found: boolean
@@ -34,18 +34,18 @@ export interface AddressSearchResult {
 }
 
 /**
- * Interfaz base para implementar nuevos proveedores de geocodificación.
+ * Base interface for implementing new geocoding providers.
  */
 export interface GeoProvider {
     name: string
     resolveAddress(query: AddressQuery): Promise<AddressSearchResult>
 }
 
-/** Proveedores soportados oficialmente o modo personalizado */
+/** Officially supported providers or custom mode */
 export type SupportedProvider = 'Nominatim' | 'custom'
 
 /**
- * Configuración global de la librería.
+ * Global library configuration.
  */
 export interface AddressKitConfig {
     provider?: SupportedProvider

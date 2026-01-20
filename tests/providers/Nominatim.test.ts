@@ -6,9 +6,8 @@ describe('Nominatim', () => {
         vi.stubGlobal('fetch', vi.fn())
     })
 
-    it('debería resolver y normalizar correctamente una respuesta exitosa', async () => {
+    it('should resolve and normalize a successful response', async () => {
         const mockResponse = [{
-            place_id: 12345,
             display_name: 'Calle Falsa',
             lat: '40',
             lon: '-3',
@@ -27,7 +26,7 @@ describe('Nominatim', () => {
         expect(result.data?.street).toBe('Calle Falsa')
     })
 
-    it('debería manejar cuando no se encuentran resultados', async () => {
+    it('should handle when no results are found', async () => {
         vi.mocked(fetch).mockResolvedValue({
             ok: true,
             json: async () => []
@@ -39,7 +38,7 @@ describe('Nominatim', () => {
         expect(result.found).toBe(false)
     })
 
-    it('debería lanzar un error específico en caso de Rate Limit (429)', async () => {
+    it('should throw a specific error on Rate Limit (429)', async () => {
         vi.mocked(fetch).mockResolvedValue({
             ok: false,
             status: 429,
@@ -48,19 +47,18 @@ describe('Nominatim', () => {
 
         const provider = new Nominatim()
         await expect(provider.resolveAddress({ country: 'Spain' }))
-            .rejects.toThrow('Has superado el límite de peticiones')
+            .rejects.toThrow('Rate limit exceeded')
     })
 
-    it('debería manejar errores de red', async () => {
+    it('should handle network errors', async () => {
         vi.mocked(fetch).mockRejectedValue(new TypeError('Failed to fetch'))
 
         const provider = new Nominatim()
         await expect(provider.resolveAddress({ country: 'Spain' }))
-            .rejects.toThrow('Error de red')
+            .rejects.toThrow('Network error')
     })
 
-    it('debería encolar peticiones respetando el intervalo', async () => {
-        // Activamos intervalo para este test
+    it('should queue requests respecting the interval', async () => {
         Nominatim.MIN_INTERVAL = 100
 
         vi.mocked(fetch).mockResolvedValue({
@@ -77,7 +75,6 @@ describe('Nominatim', () => {
         await Promise.all([p1, p2])
         const duration = Date.now() - start
 
-        // La segunda petición debe haber esperado al menos 100ms
         expect(duration).toBeGreaterThanOrEqual(100)
         expect(fetch).toHaveBeenCalledTimes(2)
     })
