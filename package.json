@@ -1,6 +1,6 @@
 {
   "name": "address-kit",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Robust TypeScript library for address resolution, normalization, and enrichment.",
   "type": "module",
   "main": "./dist/index.js",
@@ -25,9 +25,9 @@
     "lint:fix": "eslint . --fix",
     "test": "vitest",
     "test:ci": "vitest run",
-    "publish:patch": "pnpm version patch && pnpm build && pnpm publish",
-    "publish:minor": "pnpm version minor && pnpm build && pnpm publish",
-    "publish:major": "pnpm version major && pnpm build && pnpm publish"
+    "release:patch": "pnpm version patch && git push origin main --follow-tags",
+    "release:minor": "pnpm version minor && git push origin main --follow-tags",
+    "release:major": "pnpm version major && git push origin main --follow-tags"
   },
   "keywords": [
     "address",
