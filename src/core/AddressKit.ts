@@ -1,5 +1,6 @@
 import { GeoProvider, AddressQuery, AddressSearchResult, AddressKitConfig, SupportedProvider } from './types.js'
 import { Nominatim } from '../providers/Nominatim.js'
+import { Google } from '../providers/Google.js'
 import { CacheProvider } from './CacheProvider.js'
 
 export class AddressKit {
@@ -24,6 +25,12 @@ export class AddressKit {
         switch (type) {
             case 'Nominatim':
                 return new Nominatim({
+                    language: config.language
+                })
+
+            case 'Google':
+                return new Google({
+                    apiKey: config.apiKey || '',
                     language: config.language
                 })
 
