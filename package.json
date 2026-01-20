@@ -25,9 +25,9 @@
     "lint:fix": "eslint . --fix",
     "test": "vitest",
     "test:ci": "vitest run",
-    "release:patch": "pnpm version patch && git push origin main --follow-tags",
-    "release:minor": "pnpm version minor && git push origin main --follow-tags",
-    "release:major": "pnpm version major && git push origin main --follow-tags"
+    "release:patch": "pnpm version patch -m \"chore(release): %s\" && git push origin main --follow-tags",
+    "release:minor": "pnpm version minor -m \"chore(release): %s\" && git push origin main --follow-tags",
+    "release:major": "pnpm version major -m \"chore(release): %s\" && git push origin main --follow-tags"
   },
   "keywords": [
     "address",
