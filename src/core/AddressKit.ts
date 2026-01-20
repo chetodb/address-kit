@@ -3,14 +3,15 @@ import { Nominatim } from '../providers/Nominatim.js'
 import { CacheProvider } from './CacheProvider.js'
 
 export class AddressKit {
+    private static readonly DEFAULT_TTL = 7 * 24 * 60 * 60 * 1000 // 7 days
+
     private provider: GeoProvider
-    private DEFAULT_TTL: number = 1000 * 60 * 60 * 24 * 7
 
     constructor(config: AddressKitConfig = {}) {
         const providerName = config.provider || 'Nominatim'
         const baseProvider = this.createProvider(providerName, config)
 
-        const ttl = config.cacheTtl ?? this.DEFAULT_TTL
+        const ttl = config.cacheTtl ?? AddressKit.DEFAULT_TTL
 
         if (ttl > 0) {
             this.provider = new CacheProvider(baseProvider, ttl)
@@ -28,7 +29,7 @@ export class AddressKit {
 
             case 'custom':
                 if (!config.providerInstance) {
-                    throw new Error('Configuración inválida: Debe proporcionar "providerInstance" cuando usa provider="custom"')
+                    throw new Error('AddressKit: Invalid config. You must provide "providerInstance" when using provider="custom".')
                 }
                 return config.providerInstance
 
@@ -40,21 +41,21 @@ export class AddressKit {
     }
 
     /**
-     * Cambia el proveedor activo en tiempo de ejecución.
-     * @param provider Nueva instancia de proveedor a utilizar.
+     * Replace the active provider at runtime.
+     * @param provider New provider instance to use.
      */
     setProvider(provider: GeoProvider): void {
         this.provider = provider
     }
 
     /**
-     * Busca, obtiene y verifica una dirección.
-     * @param query Datos de la dirección a buscar (calle, ciudad, CP...).
-     * @returns Promesa con el resultado enriquecido y validado.
+     * Resolve, enrich and validate an address.
+     * @param query Address data to search (street, city, postal code...).
+     * @returns Promise with the enriched and validated result.
      */
     async resolve(query: AddressQuery): Promise<AddressSearchResult> {
         if (!query.country) {
-            throw new Error('AddressKit: El campo "country" es obligatorio para realizar una búsqueda.')
+            throw new Error('AddressKit: The "country" field is required.')
         }
         return this.provider.resolveAddress(query)
     }

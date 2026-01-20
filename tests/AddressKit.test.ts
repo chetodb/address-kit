@@ -19,7 +19,7 @@ class MockGeoProvider implements GeoProvider {
 }
 
 describe('AddressKit', () => {
-    it('debería resolver una dirección usando un provider inyectado', async () => {
+    it('should resolve an address using an injected provider', async () => {
         const kit = new AddressKit()
         kit.setProvider(new MockGeoProvider())
 
@@ -29,13 +29,13 @@ describe('AddressKit', () => {
         expect(result.data?.street).toBe('Calle Falsa')
     })
 
-    it('debería fallar si no se indica el país', async () => {
+    it('should fail if country is not provided', async () => {
         const kit = new AddressKit()
         // @ts-ignore
-        await expect(kit.resolve({})).rejects.toThrow('campo "country" es obligatorio')
+        await expect(kit.resolve({})).rejects.toThrow('"country" field is required')
     })
 
-    it('debería instanciarse correctamente con un proveedor custom', async () => {
+    it('should instantiate correctly with a custom provider', async () => {
         const kit = new AddressKit({
             provider: 'custom',
             providerInstance: new MockGeoProvider()
@@ -45,12 +45,12 @@ describe('AddressKit', () => {
         expect(result.found).toBe(true)
     })
 
-    it('debería lanzar error si falta la instancia en modo custom', () => {
+    it('should throw error if providerInstance is missing in custom mode', () => {
         expect(() => new AddressKit({ provider: 'custom' }))
-            .toThrow('Debe proporcionar "providerInstance"')
+            .toThrow('providerInstance')
     })
 
-    it('debería usar la caché por defecto (7 días)', async () => {
+    it('should use cache by default (7 days)', async () => {
         const provider = new MockGeoProvider()
         const spy = vi.spyOn(provider, 'resolveAddress')
 
@@ -59,9 +59,7 @@ describe('AddressKit', () => {
             providerInstance: provider
         })
 
-        // Primera llamada: consulta al provider
         await kit.resolve({ country: 'France' })
-        // Segunda llamada: viene de caché
         await kit.resolve({ country: 'France' })
 
         expect(spy).toHaveBeenCalledTimes(1)

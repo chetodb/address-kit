@@ -1,7 +1,7 @@
-// 1. API Principal
+// Main API
 export { AddressKit } from './core/AddressKit.js'
 
-// 2. Tipos de Datos y Contratos
+// Types and Contracts
 export type {
     Address,
     AddressQuery,
