@@ -1,6 +1,6 @@
 {
   "name": "address-kit",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Robust TypeScript library for address resolution, normalization, and enrichment.",
   "type": "module",
   "main": "./dist/index.js",
